@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ChromaKeyVideoView">
+        <attr name="looping" format="boolean" />
+        <attr name="silhouetteMode" format="boolean" />
+        <attr name="backgroundColor" format="color" />
+        <attr name="silhouetteColor" format="color" />
+        <attr name="tolerance" format="float" />
+        <attr name="videoScale" format="float" />
+        <attr name="centerVideoX" format="float" />
+        <attr name="centerVideoY" format="float" />
+        <attr name="fadeInDuration" format="integer" />
+        <attr name="fadeInDelay" format="integer" />
+        <attr name="fadeOutDuration" format="integer" />
+        <attr name="fadeOutLead" format="integer" />
+    </declare-styleable>
+</resources>
