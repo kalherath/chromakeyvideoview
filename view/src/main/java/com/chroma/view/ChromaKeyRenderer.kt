@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package com.chroma.chromakeyvideoview
+package com.chroma.view
 
 import android.graphics.Color
 import android.graphics.SurfaceTexture
@@ -127,7 +127,8 @@ class ChromaKeyRenderer : GLTextureView.Renderer, SurfaceTexture.OnFrameAvailabl
 
     init {
         triangleVertices = ByteBuffer.allocateDirect(
-                triangleVerticesData.size * FLOAT_SIZE_BYTES)
+                triangleVerticesData.size * FLOAT_SIZE_BYTES
+        )
                 .order(ByteOrder.nativeOrder()).asFloatBuffer()
         triangleVertices.put(triangleVerticesData).position(0)
         Matrix.setIdentityM(sTMatrix, 0)
@@ -155,14 +156,14 @@ class ChromaKeyRenderer : GLTextureView.Renderer, SurfaceTexture.OnFrameAvailabl
 
         triangleVertices.position(TRIANGLE_VERTICES_DATA_POS_OFFSET)
         GLES20.glVertexAttribPointer(aPositionHandle, 3, GLES20.GL_FLOAT, false,
-                TRIANGLE_VERTICES_DATA_STRIDE_BYTES, triangleVertices)
+            TRIANGLE_VERTICES_DATA_STRIDE_BYTES, triangleVertices)
         checkForGlError("glVertexAttribPointer maPosition")
         GLES20.glEnableVertexAttribArray(aPositionHandle)
         checkForGlError("glEnableVertexAttribArray aPositionHandle")
 
         triangleVertices.position(TRIANGLE_VERTICES_DATA_UV_OFFSET)
         GLES20.glVertexAttribPointer(aTextureHandle, 3, GLES20.GL_FLOAT, false,
-                TRIANGLE_VERTICES_DATA_STRIDE_BYTES, triangleVertices)
+            TRIANGLE_VERTICES_DATA_STRIDE_BYTES, triangleVertices)
         checkForGlError("glVertexAttribPointer aTextureHandle")
         GLES20.glEnableVertexAttribArray(aTextureHandle)
         checkForGlError("glEnableVertexAttribArray aTextureHandle")
@@ -226,9 +227,11 @@ class ChromaKeyRenderer : GLTextureView.Renderer, SurfaceTexture.OnFrameAvailabl
         GLES20.glBindTexture(GL_TEXTURE_EXTERNAL_OES, textureID)
         checkForGlError("glBindTexture textureID")
 
-        GLES20.glTexParameterf(GL_TEXTURE_EXTERNAL_OES, GLES20.GL_TEXTURE_MIN_FILTER,
+        GLES20.glTexParameterf(
+            GL_TEXTURE_EXTERNAL_OES, GLES20.GL_TEXTURE_MIN_FILTER,
                 GLES20.GL_NEAREST.toFloat())
-        GLES20.glTexParameterf(GL_TEXTURE_EXTERNAL_OES, GLES20.GL_TEXTURE_MAG_FILTER,
+        GLES20.glTexParameterf(
+            GL_TEXTURE_EXTERNAL_OES, GLES20.GL_TEXTURE_MAG_FILTER,
                 GLES20.GL_LINEAR.toFloat())
 
         surface = SurfaceTexture(textureID)

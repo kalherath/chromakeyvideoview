@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.chroma.chromakeyvideoview
+package com.chroma.view
 
 import java.util.Timer
 import java.util.TimerTask

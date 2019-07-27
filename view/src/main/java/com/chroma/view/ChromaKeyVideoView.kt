@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package com.chroma.chromakeyvideoview
+package com.chroma.view
 
 import android.annotation.SuppressLint
 import android.annotation.TargetApi
@@ -29,6 +29,7 @@ import android.util.AttributeSet
 import android.util.Log
 import android.view.Surface
 import android.view.View
+import com.chroma.chromakeyvideoview.R
 
 import java.io.FileDescriptor
 import java.io.IOException
@@ -121,22 +122,57 @@ class ChromaKeyVideoView(context: Context, attrs: AttributeSet) : GLTextureView(
 
     private fun obtainRendererOptions(attrs: AttributeSet?) {
         if (attrs != null) {
-            val arr = context.obtainStyledAttributes(attrs, R.styleable.ChromaKeyVideoView)
-            val silhouetteMode = arr.getBoolean(R.styleable.ChromaKeyVideoView_silhouetteMode, ChromaKeyRenderer.DEFAULT_SILHOUETTE_MODE)
+            val arr = context.obtainStyledAttributes(attrs,
+                R.styleable.ChromaKeyVideoView
+            )
+            val silhouetteMode = arr.getBoolean(
+                R.styleable.ChromaKeyVideoView_silhouetteMode,
+                ChromaKeyRenderer.DEFAULT_SILHOUETTE_MODE
+            )
             isLooping = arr.getBoolean(R.styleable.ChromaKeyVideoView_looping, false)
             setLooping(isLooping)
             renderer?.silhouetteMode = silhouetteMode
-            renderer?.setBackgroundColor(arr.getColor(R.styleable.ChromaKeyVideoView_backgroundColor, ChromaKeyRenderer.DEFAULT_BACKGROUND_COLOR))
-            renderer?.setSilhouetteColor(arr.getColor(R.styleable.ChromaKeyVideoView_silhouetteColor, ChromaKeyRenderer.DEFAULT_SILHOUETTE_COLOR))
-            renderer?.tolerance = arr.getFloat(R.styleable.ChromaKeyVideoView_tolerance, ChromaKeyRenderer.DEFAULT_TOLERANCE)
-            renderer?.fadeInDelay = arr.getInteger(R.styleable.ChromaKeyVideoView_fadeInDelay, ChromaKeyRenderer.DEFAULT_FADE_IN_DELAY)
-            renderer?.fadeInDuration = arr.getInteger(R.styleable.ChromaKeyVideoView_fadeInDuration, ChromaKeyRenderer.DEFAULT_FADE_IN_DURATION)
-            renderer?.fadeOutLead = arr.getInteger(R.styleable.ChromaKeyVideoView_fadeOutLead, ChromaKeyRenderer.DEFAULT_FADE_OUT_LEAD)
-            renderer?.fadeOutDuration = arr.getInteger(R.styleable.ChromaKeyVideoView_fadeOutDuration, ChromaKeyRenderer.DEFAULT_FADE_OUT_DURATION)
+            renderer?.setBackgroundColor(arr.getColor(
+                R.styleable.ChromaKeyVideoView_backgroundColor,
+                ChromaKeyRenderer.DEFAULT_BACKGROUND_COLOR
+            ))
+            renderer?.setSilhouetteColor(arr.getColor(
+                R.styleable.ChromaKeyVideoView_silhouetteColor,
+                ChromaKeyRenderer.DEFAULT_SILHOUETTE_COLOR
+            ))
+            renderer?.tolerance = arr.getFloat(
+                R.styleable.ChromaKeyVideoView_tolerance,
+                ChromaKeyRenderer.DEFAULT_TOLERANCE
+            )
+            renderer?.fadeInDelay = arr.getInteger(
+                R.styleable.ChromaKeyVideoView_fadeInDelay,
+                ChromaKeyRenderer.DEFAULT_FADE_IN_DELAY
+            )
+            renderer?.fadeInDuration = arr.getInteger(
+                R.styleable.ChromaKeyVideoView_fadeInDuration,
+                ChromaKeyRenderer.DEFAULT_FADE_IN_DURATION
+            )
+            renderer?.fadeOutLead = arr.getInteger(
+                R.styleable.ChromaKeyVideoView_fadeOutLead,
+                ChromaKeyRenderer.DEFAULT_FADE_OUT_LEAD
+            )
+            renderer?.fadeOutDuration = arr.getInteger(
+                R.styleable.ChromaKeyVideoView_fadeOutDuration,
+                ChromaKeyRenderer.DEFAULT_FADE_OUT_DURATION
+            )
 
-            videoScale = arr.getFloat(R.styleable.ChromaKeyVideoView_videoScale, DEFAULT_VIDEO_SCALE)
-            centerX = arr.getFloat(R.styleable.ChromaKeyVideoView_centerVideoX, DEFAULT_CENTER_VIDEO_X)
-            centerY = arr.getFloat(R.styleable.ChromaKeyVideoView_centerVideoY, DEFAULT_CENTER_VIDEO_Y)
+            videoScale = arr.getFloat(
+                R.styleable.ChromaKeyVideoView_videoScale,
+                DEFAULT_VIDEO_SCALE
+            )
+            centerX = arr.getFloat(
+                R.styleable.ChromaKeyVideoView_centerVideoX,
+                DEFAULT_CENTER_VIDEO_X
+            )
+            centerY = arr.getFloat(
+                R.styleable.ChromaKeyVideoView_centerVideoY,
+                DEFAULT_CENTER_VIDEO_Y
+            )
             arr.recycle()
         }
     }
@@ -343,7 +379,8 @@ class ChromaKeyVideoView(context: Context, attrs: AttributeSet) : GLTextureView(
 
     fun reset() {
         if (state == PlayerState.STARTED || state == PlayerState.PAUSED ||
-                        state == PlayerState.STOPPED) {
+                        state == PlayerState.STOPPED
+        ) {
             mediaPlayer?.reset()
             state = PlayerState.NOT_PREPARED
         }
