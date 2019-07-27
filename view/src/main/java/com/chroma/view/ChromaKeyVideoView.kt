@@ -29,7 +29,6 @@ import android.util.AttributeSet
 import android.util.Log
 import android.view.Surface
 import android.view.View
-import com.chroma.chromakeyvideoview.R
 
 import java.io.FileDescriptor
 import java.io.IOException
