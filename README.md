@@ -1,10 +1,10 @@
 # Chroma Key Video View
-Chroma Key Video View is a video player which can change set solid backgrounds to transparent and change 
-all other colors in the video to any color of your choosing. Additionally, it also has fade in, fade out, 
-video scaling and video centering features.
+Chroma Key Video View is a video player which can set one solid color in the video (such as a green/blue screen background)
+to transparent and change all other colors in the video to any color of your choosing (silhouetting). Additionally, it also 
+has fade in, fade out, video scaling and video centering features.
 
 ## Gradle dependency
-The Gradle dependency is provided by JitPack. 
+The Gradle dependency is provided by [JitPack](https://jitpack.io). 
 Add the following repository to the project's build.gradle file
 
     allprojects {
