@@ -70,7 +70,9 @@ class ChromaKeyVideoView(context: Context, attrs: AttributeSet) : GLTextureView(
     private var fadeOutLead = 0
     private var fadeOutStartTime = 0
     private var fadeOutStartTimer : PausableTimer? = null
-    private var isLooping = false
+
+    private var fadeOutTowardsEnd = false
+    private var fadeInAtStart = false
 
     private var state = PlayerState.NOT_PREPARED
 
@@ -89,6 +91,13 @@ class ChromaKeyVideoView(context: Context, attrs: AttributeSet) : GLTextureView(
     val currentPosition: Int
         get() = mediaPlayer!!.currentPosition
 
+    var isLooping = false
+        set(value) {
+            field = value
+            mediaPlayer?.isLooping = value
+        }
+
+
     init {
         if (!isInEditMode) {
             init(attrs)
@@ -98,9 +107,9 @@ class ChromaKeyVideoView(context: Context, attrs: AttributeSet) : GLTextureView(
     private fun init(attrs: AttributeSet) {
         setEGLContextClientVersion(GL_CONTEXT_VERSION)
         setEGLConfigChooser(8, 8, 8, 8, 16, 0)
-        initMediaPlayer()
         renderer = ChromaKeyRenderer()
-        obtainRendererOptions(attrs)
+        initMediaPlayer()
+        obtainPlayerOptions(attrs)
         this.addOnSurfacePrepareListener()
         setRenderer(renderer)
         bringToFront()
@@ -111,15 +120,14 @@ class ChromaKeyVideoView(context: Context, attrs: AttributeSet) : GLTextureView(
     private fun initMediaPlayer() {
         mediaPlayer = MediaPlayer()
         setScreenOnWhilePlaying(true)
-        setLooping(isLooping)
 
-        mediaPlayer!!.setOnCompletionListener {
+        mediaPlayer?.setOnCompletionListener {
             state = PlayerState.PAUSED
             onVideoEndedListener?.onVideoEnded()
         }
     }
 
-    private fun obtainRendererOptions(attrs: AttributeSet?) {
+    private fun obtainPlayerOptions(attrs: AttributeSet?) {
         if (attrs != null) {
             val arr = context.obtainStyledAttributes(attrs,
                 R.styleable.ChromaKeyVideoView
@@ -129,7 +137,9 @@ class ChromaKeyVideoView(context: Context, attrs: AttributeSet) : GLTextureView(
                 ChromaKeyRenderer.DEFAULT_SILHOUETTE_MODE
             )
             isLooping = arr.getBoolean(R.styleable.ChromaKeyVideoView_looping, false)
-            setLooping(isLooping)
+            fadeOutTowardsEnd = arr.getBoolean(R.styleable.ChromaKeyVideoView_fadeOutTowardsEnd, false)
+            fadeInAtStart = arr.getBoolean(R.styleable.ChromaKeyVideoView_fadeInAtStart, false)
+
             renderer?.silhouetteMode = silhouetteMode
             renderer?.setBackgroundColor(arr.getColor(
                 R.styleable.ChromaKeyVideoView_backgroundColor,
@@ -324,38 +334,49 @@ class ChromaKeyVideoView(context: Context, attrs: AttributeSet) : GLTextureView(
         }
     }
 
-    private fun initFadeOutStartTimer(currentPosition : Long = 0) {
+    fun scheduleFadeOut(currentPosition : Long) {
         fadeOutStartTimer?.cancel()
         fadeOutStartTimer = PausableTimer()
         fadeOutStartTimer?.schedule(object : TimerTask() {
             override fun run() {
-                renderer?.startFadeOut()
+                renderer?.fadeOut()
             }
         }, fadeOutStartTime.toLong() - currentPosition)
     }
 
+    fun fadeIn() {
+        renderer?.fadeIn()
+    }
+
+    fun fadeOut() {
+        renderer?.fadeOut()
+    }
+
     fun start() {
-        if (mediaPlayer != null) {
+        mediaPlayer?.let {
             when (state) {
                 PlayerState.PREPARED -> {
-                    mediaPlayer!!.start()
+                    it.start()
                     state = PlayerState.STARTED
                     onVideoStartedListener?.onVideoStarted()
-                    renderer!!.startFadeIn()
-                    initFadeOutStartTimer()
+                    if (fadeOutTowardsEnd && !isLooping) scheduleFadeOut(it.currentPosition.toLong())
+                    if (fadeInAtStart) renderer?.fadeIn()
                 }
                 PlayerState.PAUSED -> {
-                    mediaPlayer!!.start()
                     state = PlayerState.STARTED
                     fadeOutStartTimer?.resume()
+                    it.start()
                 }
-                PlayerState.STOPPED -> prepareAsync(MediaPlayer.OnPreparedListener {
-                    mediaPlayer!!.start()
-                    state = PlayerState.STARTED
-                    onVideoStartedListener?.onVideoStarted()
-                    renderer!!.startFadeIn()
-                    initFadeOutStartTimer()
-                })
+                PlayerState.STOPPED -> {
+                    val player = it
+                    prepareAsync(MediaPlayer.OnPreparedListener {
+                        player.start()
+                        state = PlayerState.STARTED
+                        onVideoStartedListener?.onVideoStarted()
+                        if (fadeOutTowardsEnd && !isLooping) scheduleFadeOut(player.currentPosition.toLong())
+                        if (fadeInAtStart) renderer?.fadeIn()
+                    })
+                }
                 else -> {}
             }
         }
@@ -392,11 +413,7 @@ class ChromaKeyVideoView(context: Context, attrs: AttributeSet) : GLTextureView(
 
     fun seekTo(msec: Int) {
         mediaPlayer?.seekTo(msec)
-        initFadeOutStartTimer(msec.toLong())
-    }
-
-    fun setLooping(looping: Boolean) {
-        mediaPlayer?.isLooping = looping
+        scheduleFadeOut(msec.toLong())
     }
 
     fun setScreenOnWhilePlaying(screenOn: Boolean) {

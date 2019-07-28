@@ -308,32 +308,30 @@ class ChromaKeyRenderer : GLTextureView.Renderer, SurfaceTexture.OnFrameAvailabl
         silhouetteBlueParam = Color.blue(color).toFloat() / COLOR_MAX_VALUE
     }
 
-    internal fun startFadeIn() {
-        fadeInTimer ?: run {
-            fadeInTimer = Timer()
-        }
-        fadeInTimer!!.schedule(object : TimerTask() {
+    internal fun fadeIn() {
+        fadeInTimer?.cancel()
+        fadeInTimer = Timer()
+        fadeInTimer?.schedule(object : TimerTask() {
             override fun run() {
                 fade += fadeAlphaIncrement
                 if (fade > 1.0f) {
                     fade = 1.0f
-                    fadeInTimer!!.cancel()
+                    fadeInTimer?.cancel()
                     fadeInTimer = null
                 }
             }
         }, fadeInDelay.toLong(), (fadeInDuration / FADE_FRAME_RATE).toLong())
     }
 
-    internal fun startFadeOut() {
-        fadeOutTimer ?: run {
-            fadeOutTimer = Timer()
-        }
-        fadeOutTimer!!.schedule(object : TimerTask() {
+    internal fun fadeOut() {
+        fadeOutTimer?.cancel()
+        fadeOutTimer = Timer()
+        fadeOutTimer?.schedule(object : TimerTask() {
             override fun run() {
                 fade -= fadeAlphaIncrement
                 if (fade < 0.0f){
                     fade = 0.0f
-                    fadeOutTimer!!.cancel()
+                    fadeOutTimer?.cancel()
                     fadeOutTimer = null
                 }
             }

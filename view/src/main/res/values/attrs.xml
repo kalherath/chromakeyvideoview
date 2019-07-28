@@ -9,6 +9,8 @@
         <attr name="videoScale" format="float" />
         <attr name="centerVideoX" format="float" />
         <attr name="centerVideoY" format="float" />
+        <attr name="fadeInAtStart" format="boolean" />
+        <attr name="fadeOutTowardsEnd" format="boolean" />
         <attr name="fadeInDuration" format="integer" />
         <attr name="fadeInDelay" format="integer" />
         <attr name="fadeOutDuration" format="integer" />
