@@ -360,7 +360,7 @@ class ChromaKeyVideoView(context: Context, attrs: AttributeSet) : GLTextureView(
                     state = PlayerState.STARTED
                     onVideoStartedListener?.onVideoStarted()
                     if (fadeOutTowardsEnd && !isLooping) scheduleFadeOut(it.currentPosition.toLong())
-                    if (fadeInAtStart) renderer?.fadeIn()
+                    if (fadeInAtStart) fadeIn()
                 }
                 PlayerState.PAUSED -> {
                     state = PlayerState.STARTED
@@ -374,7 +374,7 @@ class ChromaKeyVideoView(context: Context, attrs: AttributeSet) : GLTextureView(
                         state = PlayerState.STARTED
                         onVideoStartedListener?.onVideoStarted()
                         if (fadeOutTowardsEnd && !isLooping) scheduleFadeOut(player.currentPosition.toLong())
-                        if (fadeInAtStart) renderer?.fadeIn()
+                        if (fadeInAtStart) fadeIn()
                     })
                 }
                 else -> {}

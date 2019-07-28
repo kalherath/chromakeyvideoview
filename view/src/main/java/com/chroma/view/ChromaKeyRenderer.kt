@@ -103,7 +103,7 @@ class ChromaKeyRenderer : GLTextureView.Renderer, SurfaceTexture.OnFrameAvailabl
     private var silhouetteGreenParam = 0.0f
     private var silhouetteBlueParam = 0.0f
 
-    private var fade = 0.0f
+    private var fade = 1.0f
     private var fadeInTimer : Timer? = null
     private var fadeOutTimer : Timer? = null
 
@@ -309,6 +309,7 @@ class ChromaKeyRenderer : GLTextureView.Renderer, SurfaceTexture.OnFrameAvailabl
     }
 
     internal fun fadeIn() {
+        fade = 0.0f
         fadeInTimer?.cancel()
         fadeInTimer = Timer()
         fadeInTimer?.schedule(object : TimerTask() {
