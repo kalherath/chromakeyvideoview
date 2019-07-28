@@ -300,7 +300,7 @@ class ChromaKeyVideoView(context: Context, attrs: AttributeSet) : GLTextureView(
         onDataSourceSet(retriever)
     }
 
-    fun setVideoFromUri(context: Context, uri: Uri) {
+    fun setVideoFromUri(uri: Uri) {
         reset()
         try {
             mediaPlayer?.setDataSource(context, uri)
