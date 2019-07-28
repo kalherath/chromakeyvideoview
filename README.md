@@ -8,9 +8,9 @@ The Gradle dependency is provided by [JitPack](https://jitpack.io).
 Add the following repository to the project's build.gradle file
 
     allprojects {
-    repositories {
-        maven { url 'https://jitpack.io' }
-    }
+        repositories {
+            maven { url 'https://jitpack.io' }
+        }
     }
     
 Finally, add this dependency to your module's build.gradle file:
