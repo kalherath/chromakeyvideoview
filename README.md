@@ -1,5 +1,5 @@
 # Chroma Key Video View
-Chroma Key Video View is a video player which can set one solid color in the video (such as a green/blue screen background)
+Chroma Key Video View is a video player which can set one solid color in a video (such as a green/blue screen background)
 to transparent and change all other colors in the video to any color of your choosing (silhouetting). Additionally, it also 
 has fade in, fade out, video scaling and video centering features.
 
