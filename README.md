@@ -15,7 +15,7 @@ Add the following repository to the project's build.gradle file
     
 Finally, add this dependency to your module's build.gradle file:
 
-    implementation 'com.github.kalherath:chromakeyvideoview:1.0.1'
+    implementation 'com.github.kalherath:chromakeyvideoview:1.02-alpha01'
     
 ## How to use it
 Add a ChromaKeyVideoView inside a layout xml.
